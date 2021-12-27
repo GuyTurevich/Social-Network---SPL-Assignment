@@ -13,6 +13,7 @@ public class BidiMessagingProtocolImpl<T> implements BidiMessagingProtocol<T> {
 
     @Override
     public boolean shouldTerminate() {
-        return false;
+
+        return false;// should delete after done implementing
     }
 }
