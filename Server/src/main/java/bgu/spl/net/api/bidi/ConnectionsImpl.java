@@ -10,6 +10,7 @@ public class ConnectionsImpl<T> implements Connections<T> {
     ConcurrentHashMap<Integer, NonBlockingConnectionHandler <T>> clients;
 
     public ConnectionsImpl(){
+        singleton = this;
         clients = new ConcurrentHashMap<Integer,NonBlockingConnectionHandler<T>>();
     }
 
