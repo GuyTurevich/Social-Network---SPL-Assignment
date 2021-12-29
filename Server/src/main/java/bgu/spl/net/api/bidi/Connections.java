@@ -11,4 +11,6 @@ public interface Connections<T> {
     void broadcast(T msg);
 
     void disconnect(int connectionId);
+
+    void connect(int connectionId);
 }

@@ -6,14 +6,14 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ConnectionsImpl<T> implements Connections<T> {
 
-    private ConcurrentHashMap<Integer, NonBlockingConnectionHandler <T>> clients;
+    private ConcurrentHashMap<Integer, NonBlockingConnectionHandler <T>> activeClients;
 
     private static class SingletonHolder{
         private static ConnectionsImpl instance = new ConnectionsImpl();
     }
 
     public ConnectionsImpl(){
-        clients = new ConcurrentHashMap<Integer,NonBlockingConnectionHandler<T>>();
+        activeClients = new ConcurrentHashMap<Integer,NonBlockingConnectionHandler<T>>();
     }
 
     public  ConnectionsImpl getInstance() {
@@ -22,7 +22,7 @@ public class ConnectionsImpl<T> implements Connections<T> {
 
     @Override
     public boolean send(int connectionId, T msg) {
-        if(!clients.containsKey(connectionId))  return false;
+        if(!activeClients.containsKey(connectionId))  return false;
         else{
 
         }
@@ -36,6 +36,10 @@ public class ConnectionsImpl<T> implements Connections<T> {
 
     @Override
     public void disconnect(int connectionId) {
+        activeClients.remove(connectionId);
+    }
 
+    public void connect(int connectionId){
+        activeClients.put(connectionId , null); // *need to figure out how to get its connectionHandler
     }
 }

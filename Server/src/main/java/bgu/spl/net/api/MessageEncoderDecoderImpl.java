@@ -15,7 +15,7 @@ public class MessageEncoderDecoderImpl<T> implements MessageEncoderDecoder<Strin
         else{
             if(nextByte == ';') {
                 currIndex = 0;
-                return shortToString(bytesToShort(opCode)) + " " + bytes.toString() + ";";
+                return shortToString(bytesToShort(opCode)) + " " + bytes.toString().replaceAll("\0", " ") + ";";
             }
             pushByte(nextByte);
         }
