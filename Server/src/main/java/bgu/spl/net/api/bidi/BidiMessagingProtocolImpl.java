@@ -1,6 +1,7 @@
 package bgu.spl.net.api.bidi;
 
 public class BidiMessagingProtocolImpl<T> implements BidiMessagingProtocol<T> {
+
     @Override
     public void start(int connectionId, Connections<T> connections) {
 
@@ -13,7 +14,6 @@ public class BidiMessagingProtocolImpl<T> implements BidiMessagingProtocol<T> {
 
     @Override
     public boolean shouldTerminate() {
-
         return false;// should delete after done implementing
     }
 }

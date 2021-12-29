@@ -6,17 +6,18 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ConnectionsImpl<T> implements Connections<T> {
 
-    private ConnectionsImpl<T> singleton;
-    ConcurrentHashMap<Integer, NonBlockingConnectionHandler <T>> clients;
+    private ConcurrentHashMap<Integer, NonBlockingConnectionHandler <T>> clients;
+
+    private static class SingletonHolder{
+        private static ConnectionsImpl instance = new ConnectionsImpl();
+    }
 
     public ConnectionsImpl(){
-        singleton = this;
         clients = new ConcurrentHashMap<Integer,NonBlockingConnectionHandler<T>>();
     }
 
     public  ConnectionsImpl getInstance() {
-        if (singleton == null) singleton = new ConnectionsImpl<T>();
-        return singleton;
+        return SingletonHolder.instance;
     }
 
     @Override

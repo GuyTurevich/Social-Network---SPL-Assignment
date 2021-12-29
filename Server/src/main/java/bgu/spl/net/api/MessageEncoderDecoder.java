@@ -12,7 +12,7 @@ public interface MessageEncoderDecoder<T> {
     T decodeNextByte(byte nextByte);
 
     /**
-     * encodes the given message to bytes array
+     * encodes the given message to bytes arrayF
      *
      * @param message the message to encode
      * @return the encoded bytes

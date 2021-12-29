@@ -1,5 +1,7 @@
 package bgu.spl.net.api;
 
+import java.util.Arrays;
+
 public class MessageEncoderDecoderImpl<T> implements MessageEncoderDecoder<String> {
 
     private byte[] bytes = new byte[1 << 10]; //start with 1k
@@ -8,7 +10,6 @@ public class MessageEncoderDecoderImpl<T> implements MessageEncoderDecoder<Strin
 
     @Override
     public String decodeNextByte(byte nextByte) {
-
         if(currIndex<2)
             opCode[currIndex++] = nextByte;
         else{
@@ -16,9 +17,16 @@ public class MessageEncoderDecoderImpl<T> implements MessageEncoderDecoder<Strin
                 currIndex = 0;
                 return shortToString(bytesToShort(opCode)) + " " + bytes.toString() + ";";
             }
-            bytes[currIndex++] = nextByte;
+            pushByte(nextByte);
         }
         return null;
+    }
+
+    private void pushByte(byte nextByte){
+        if (currIndex>= bytes.length)
+            bytes = Arrays.copyOf(bytes, currIndex*2); //  if there is no enough space in the array, copy bytes to new array of doubled size
+        bytes[currIndex] = nextByte;
+        currIndex++;
     }
 
     @Override
