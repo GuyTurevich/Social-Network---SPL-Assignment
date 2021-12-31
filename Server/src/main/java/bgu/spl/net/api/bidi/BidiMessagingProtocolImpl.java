@@ -1,5 +1,7 @@
 package bgu.spl.net.api.bidi;
 
+import bgu.spl.net.api.messages.LOGIN;
+import bgu.spl.net.api.messages.LOGOUT;
 import bgu.spl.net.api.messages.REGISTER;
 import bgu.spl.net.srv.Database;
 
@@ -24,8 +26,12 @@ public class BidiMessagingProtocolImpl implements BidiMessagingProtocol<String> 
         }
 
 
-        if(command.equals("REGISTER"))
-            new REGISTER(details, database).process();
+        if(command.equals("REGISTER")) new REGISTER(details, database).process();
+
+        if(command.equals("LOGIN")) new LOGIN(details, database).process();
+
+        if(command.equals("LOGOUT")) new LOGOUT(details, database).process();
+
 
     }
 

@@ -1,22 +1,22 @@
 package bgu.spl.net.api.bidi;
 
-import bgu.spl.net.srv.NonBlockingConnectionHandler;
+import bgu.spl.net.srv.bidi.ConnectionHandler;
 
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ConnectionsImpl<T> implements Connections<T> {
 
-    private ConcurrentHashMap<Integer, NonBlockingConnectionHandler <T>> activeClients;
+    private ConcurrentHashMap<Integer, ConnectionHandler<T>> activeClients;
 
     private static class SingletonHolder{
         private static ConnectionsImpl instance = new ConnectionsImpl();
     }
 
     public ConnectionsImpl(){
-        activeClients = new ConcurrentHashMap<Integer,NonBlockingConnectionHandler<T>>();
+        activeClients = new ConcurrentHashMap<Integer,ConnectionHandler<T>>();
     }
 
-    public  ConnectionsImpl getInstance() {
+    public static ConnectionsImpl getInstance() {
         return SingletonHolder.instance;
     }
 

@@ -22,7 +22,7 @@ public class REGISTER implements Message<String> {
         User user = new User(details.substring(0, space1),
                 details.substring(space1 + 1, space2),
                 details.substring(space2 + 1, space2 + 11));
-        if (database.getUsernames().contains(user.getUsername())) {
+        if (database.isRegistered(user.getUsername())) {
             //SEND ERROR
         } else {
             database.addUser(user);
