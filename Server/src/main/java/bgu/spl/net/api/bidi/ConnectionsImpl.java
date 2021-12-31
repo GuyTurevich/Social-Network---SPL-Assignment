@@ -39,7 +39,7 @@ public class ConnectionsImpl<T> implements Connections<T> {
         activeClients.remove(connectionId);
     }
 
-    public void connect(int connectionId){
-        activeClients.put(connectionId , null); // *need to figure out how to get its connectionHandler
+    public void connect(int connectionId, ConnectionHandler<T> connectionHandler){
+        activeClients.put(connectionId , connectionHandler);
     }
 }

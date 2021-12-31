@@ -6,32 +6,29 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 public class Database {
 
     private ConcurrentLinkedDeque<User> users;
+    private ConcurrentHashMap<Integer, User> idToUser;
+    private ConcurrentHashMap<User, Integer> userToID;
     private ConcurrentHashMap<User, ConcurrentLinkedDeque<String>> userMessageQueues;
     private ConcurrentHashMap<User, ConcurrentLinkedDeque<User>> following; // a list of people followed by each user
     private ConcurrentLinkedDeque<String> loggedInUsers;
 
-    private static class SingletonHolder {
-        private static Database instance = new Database();
-    }
 
     public Database() {
         users = new ConcurrentLinkedDeque<>();
+        idToUser = new ConcurrentHashMap<>();
+        userToID = new ConcurrentHashMap<>();
         userMessageQueues = new ConcurrentHashMap<>();
         following = new ConcurrentHashMap<>();
         loggedInUsers = new ConcurrentLinkedDeque<>();
     }
 
-    public Database getInstance() {
+    private static class SingletonHolder {
+        private static Database instance = new Database();
+    }
+    public static Database getInstance() {
         return Database.SingletonHolder.instance;
     }
 
-//    public ConcurrentLinkedDeque<String> getUsernames() {
-//        ConcurrentLinkedDeque<String> usernames = new ConcurrentLinkedDeque<String>();
-//        for (User user : users) {
-//            usernames.add(user.getUsername());
-//        }
-//        return usernames;
-//    }
 
     public boolean isRegistered(String username){
         for (User user : users) {

@@ -1,20 +1,20 @@
 package bgu.spl.net.api.messages;
 
 import bgu.spl.net.api.bidi.Message;
-import bgu.spl.net.srv.Database;
 
 public class LOGIN implements Message<String> {
 
     private String details;
-    private Database database;
+    private int connectionId;
 
-    public LOGIN(String _details, Database _database) {
+    public LOGIN(String _details, int _connectionId) {
         details = _details;
-        database = _database;
+        connectionId = _connectionId;
     }
 
     @Override
     public void process() {
+
         int spaceIndex = details.indexOf(" ");
         String username = details.substring(0,spaceIndex);
         String password = details.substring(spaceIndex+1);

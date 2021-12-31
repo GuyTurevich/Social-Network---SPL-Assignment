@@ -1,17 +1,13 @@
 package bgu.spl.net.api.messages;
 
 import bgu.spl.net.api.bidi.Message;
-import bgu.spl.net.srv.Database;
 import bgu.spl.net.srv.User;
 
 public class REGISTER implements Message<String> {
 
     private String details;
-    private Database database;
 
-
-    public REGISTER(String _details, Database _database) {
-        database = _database;
+    public REGISTER(String _details) {
         details = _details;
     }
 

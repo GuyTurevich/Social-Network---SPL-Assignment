@@ -8,11 +8,16 @@ import bgu.spl.net.srv.Database;
 public class BidiMessagingProtocolImpl implements BidiMessagingProtocol<String> {
 
     Database database;
+    ConnectionsImpl connections ;
+    int connectionId;
+
+    public BidiMessagingProtocolImpl(Database _database){
+        database = _database;
+    }
 
     @Override
     public void start(int connectionId, Connections<String> connections) {
-        connections.connect(connectionId);
-        database = database.getInstance();
+
     }
 
     @Override
@@ -26,11 +31,11 @@ public class BidiMessagingProtocolImpl implements BidiMessagingProtocol<String> 
         }
 
 
-        if(command.equals("REGISTER")) new REGISTER(details, database).process();
+        if(command.equals("REGISTER")) new REGISTER(details).process();
 
-        if(command.equals("LOGIN")) new LOGIN(details, database).process();
+        if(command.equals("LOGIN")) new LOGIN(details, connectionId).process();
 
-        if(command.equals("LOGOUT")) new LOGOUT(details, database).process();
+        if(command.equals("LOGOUT")) new LOGOUT(connectionId).process();
 
 
     }

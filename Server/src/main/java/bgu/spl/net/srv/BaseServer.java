@@ -25,6 +25,7 @@ public abstract class BaseServer<T> implements Server<T> {
         this.protocolFactory = protocolFactory;
         this.encdecFactory = encdecFactory;
 		this.sock = null;
+        clientIds.set(0);
     }
 
     @Override
