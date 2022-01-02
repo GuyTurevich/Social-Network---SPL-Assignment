@@ -6,8 +6,8 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 public class Database {
 
     private ConcurrentLinkedDeque<User> users;
-    private ConcurrentHashMap<Integer, User> idToUser;
-    private ConcurrentHashMap<User, Integer> userToID;
+    private ConcurrentHashMap<Integer, String> idToUsername;
+    private ConcurrentHashMap<String, Integer> usernameToID;
     private ConcurrentHashMap<User, ConcurrentLinkedDeque<String>> userMessageQueues;
     private ConcurrentHashMap<User, ConcurrentLinkedDeque<User>> following; // a list of people followed by each user
     private ConcurrentLinkedDeque<String> loggedInUsers;
@@ -15,11 +15,25 @@ public class Database {
 
     public Database() {
         users = new ConcurrentLinkedDeque<>();
-        idToUser = new ConcurrentHashMap<>();
-        userToID = new ConcurrentHashMap<>();
+        idToUsername = new ConcurrentHashMap<>();
+        usernameToID = new ConcurrentHashMap<>();
         userMessageQueues = new ConcurrentHashMap<>();
         following = new ConcurrentHashMap<>();
         loggedInUsers = new ConcurrentLinkedDeque<>();
+    }
+
+    public void linkIdToUser(String username, int connectionId) {
+        if(usernameToID.containsKey(username)){
+            int prevId = usernameToID.get(username);
+            usernameToID.replace(username, connectionId);
+            idToUsername.remove(prevId);
+            idToUsername.put(connectionId, username);
+        }
+        else{
+            usernameToID.put(username, connectionId);
+            idToUsername.put(connectionId, username);
+        }
+
     }
 
     private static class SingletonHolder {

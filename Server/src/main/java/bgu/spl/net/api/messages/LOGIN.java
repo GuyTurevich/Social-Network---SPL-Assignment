@@ -14,7 +14,6 @@ public class LOGIN implements Message<String> {
 
     @Override
     public void process() {
-
         int spaceIndex = details.indexOf(" ");
         String username = details.substring(0,spaceIndex);
         String password = details.substring(spaceIndex+1);
@@ -28,6 +27,8 @@ public class LOGIN implements Message<String> {
             // send ERROR
         }
         else{
+            database.linkIdToUser(username, connectionId);
+//            connections.connect();
             // send ACK
         }
 

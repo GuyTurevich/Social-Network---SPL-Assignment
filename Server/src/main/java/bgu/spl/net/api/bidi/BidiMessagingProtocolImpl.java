@@ -11,7 +11,8 @@ public class BidiMessagingProtocolImpl implements BidiMessagingProtocol<String> 
     ConnectionsImpl connections ;
     int connectionId;
 
-    public BidiMessagingProtocolImpl(Database _database){
+    public BidiMessagingProtocolImpl(int _connectionId, Database _database){
+        connectionId = _connectionId;
         database = _database;
     }
 

@@ -2,6 +2,7 @@ package bgu.spl.net.srv;
 
 import bgu.spl.net.api.MessageEncoderDecoder;
 import bgu.spl.net.api.MessagingProtocol;
+import bgu.spl.net.api.bidi.ConnectionsImpl;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -20,16 +21,22 @@ public class NonBlockingConnectionHandler<T> implements java.io.Closeable {
     private final Queue<ByteBuffer> writeQueue = new ConcurrentLinkedQueue<>();
     private final SocketChannel chan;
     private final Reactor reactor;
+    private ConnectionsImpl<T> connections;
+    private int connectionId;
 
     public NonBlockingConnectionHandler(
             MessageEncoderDecoder<T> reader,
             MessagingProtocol<T> protocol,
             SocketChannel chan,
-            Reactor reactor) {
+            Reactor reactor,
+            ConnectionsImpl<T> connections,
+            int connectionId) {
         this.chan = chan;
         this.encdec = reader;
         this.protocol = protocol;
         this.reactor = reactor;
+        this.connectionId = connectionId;
+        this.connections = connections;
     }
 
     public Runnable continueRead() {
