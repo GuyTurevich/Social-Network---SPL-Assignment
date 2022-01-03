@@ -28,7 +28,6 @@ public class LOGIN implements Message<String> {
         }
         else{
             database.linkIdToUser(username, connectionId);
-//            connections.connect();
             // send ACK
         }
 

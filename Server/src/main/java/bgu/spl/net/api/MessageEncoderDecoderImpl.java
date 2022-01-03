@@ -25,8 +25,7 @@ public class MessageEncoderDecoderImpl<T> implements MessageEncoderDecoder<Strin
     private void pushByte(byte nextByte){
         if (currIndex>= bytes.length)
             bytes = Arrays.copyOf(bytes, currIndex*2); //  if there is no enough space in the array, copy bytes to new array of doubled size
-        bytes[currIndex] = nextByte;
-        currIndex++;
+        bytes[currIndex++] = nextByte;
     }
 
     @Override

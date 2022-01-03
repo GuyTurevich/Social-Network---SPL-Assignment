@@ -32,13 +32,15 @@ public class BlockingConnectionHandler<T> implements Runnable, Closeable, Connec
         this.protocol = protocol;
         this.connections = connections;
         this.connectionId = connectionId;
-        connections.connect(connectionId, this);
     }
 
     @Override
     public void run() {
         try (Socket sock = this.sock) { //just for automatic closing
             int read;
+
+            connections.connect(connectionId, this);
+            protocol.start(connectionId, connections);
 
             in = new BufferedInputStream(sock.getInputStream());
             out = new BufferedOutputStream(sock.getOutputStream());
@@ -49,6 +51,7 @@ public class BlockingConnectionHandler<T> implements Runnable, Closeable, Connec
                     protocol.process(nextMessage);
                 }
             }
+            close();
 
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -64,6 +67,11 @@ public class BlockingConnectionHandler<T> implements Runnable, Closeable, Connec
 
     @Override
     public void send(T msg) {
-
+        try {
+            out.write(encdec.encode(msg));
+            out.flush();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 }

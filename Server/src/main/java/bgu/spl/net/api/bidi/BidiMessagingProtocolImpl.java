@@ -7,18 +7,18 @@ import bgu.spl.net.srv.Database;
 
 public class BidiMessagingProtocolImpl implements BidiMessagingProtocol<String> {
 
-    Database database;
-    ConnectionsImpl connections ;
+    Database database = Database.getInstance();
+    ConnectionsImpl<String> connections ;
     int connectionId;
+    boolean terminate = false;
 
-    public BidiMessagingProtocolImpl(int _connectionId, Database _database){
-        connectionId = _connectionId;
-        database = _database;
+    public BidiMessagingProtocolImpl(){
     }
 
     @Override
     public void start(int connectionId, Connections<String> connections) {
-
+        this.connectionId = connectionId;
+        this.connections = (ConnectionsImpl<String>) connections;
     }
 
     @Override
@@ -34,15 +34,23 @@ public class BidiMessagingProtocolImpl implements BidiMessagingProtocol<String> 
 
         if(command.equals("REGISTER")) new REGISTER(details).process();
 
-        if(command.equals("LOGIN")) new LOGIN(details, connectionId).process();
+        else if(command.equals("LOGIN")) new LOGIN(details, connectionId).process();
 
-        if(command.equals("LOGOUT")) new LOGOUT(connectionId).process();
+        else if(command.equals("LOGOUT")){
+            LOGOUT logout = new LOGOUT(connectionId, this);
+            logout.process();
+            if(logout.hasLoggedOut()) terminate = true;
+        }
 
 
+
+    }
+    public void terminate(){
+        terminate = true;
     }
 
     @Override
     public boolean shouldTerminate() {
-        return false;// should delete after done implementing
+        return terminate;
     }
 }

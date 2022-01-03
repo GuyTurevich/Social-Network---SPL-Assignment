@@ -36,6 +36,10 @@ public class Database {
 
     }
 
+    public void logout(String username) {
+        loggedInUsers.remove(username);
+    }
+
     private static class SingletonHolder {
         private static Database instance = new Database();
     }
@@ -73,5 +77,9 @@ public class Database {
             }
         }
         return isCorrect; // not supposed to be reached
+    }
+
+    public String getUsernameById(int connectionId){
+        return idToUsername.get(connectionId);
     }
 }
