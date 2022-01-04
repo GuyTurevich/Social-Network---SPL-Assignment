@@ -19,20 +19,20 @@ public class LOGIN implements Message<String> {
         String password = details.substring(spaceIndex+1);
 
         if(details.charAt(details.lastIndexOf(" ") + 1) == '0'){ // CAPTCHA Failed
-            // send ERROR
+            connections.send(connectionId, "ERROR 2");
         }
         else if(!database.isRegistered(username)){ // Not registered
-            // send ERROR
+            connections.send(connectionId, "ERROR 2");
         }
         else if(database.isLoggedIn(username)){ // Already logged-in
-            // send ERROR
+            connections.send(connectionId, "ERROR 2");
         }
         else if(!database.authenticate(username,password)){ // Wrong Password
-            // send ERROR
+            connections.send(connectionId, "ERROR 2");
         }
         else{
             database.linkIdToUser(username, connectionId);
-            // send ACK
+            connections.send(connectionId, "ACK 2");
         }
 
     }

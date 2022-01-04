@@ -6,9 +6,11 @@ import bgu.spl.net.srv.User;
 public class REGISTER implements Message<String> {
 
     private String details;
+    private int connectionId;
 
-    public REGISTER(String _details) {
+    public REGISTER(String _details, int _connectionId) {
         details = _details;
+        connectionId = _connectionId;
     }
 
     @Override
@@ -19,10 +21,10 @@ public class REGISTER implements Message<String> {
                 details.substring(space1 + 1, space2),
                 details.substring(space2 + 1, space2 + 11));
         if (database.isRegistered(user.getUsername())) {
-            //SEND ERROR
+            connections.send(connectionId, "ERROR 1");
         } else {
             database.addUser(user);
-            // SEND ACK
+            connections.send(connectionId, "ACK 1");
         }
     }
 }

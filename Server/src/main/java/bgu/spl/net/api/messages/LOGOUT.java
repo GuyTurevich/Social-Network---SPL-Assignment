@@ -20,12 +20,12 @@ public class LOGOUT implements Message<String> {
         String username = database.getUsernameById(connectionId);
 
         if(!database.isLoggedIn(username)){
-            // Send ERROR
+            connections.send(connectionId, "ERROR 3");
             hasLoggedOut = false;
         }
         else{
             database.logout(username);
-            //Send ACK
+            connections.send(connectionId, "ACK 3");
             connections.disconnect(connectionId);
             hasLoggedOut = true;
         }

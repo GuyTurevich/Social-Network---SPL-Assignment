@@ -30,7 +30,7 @@ public class BidiMessagingProtocolImpl implements BidiMessagingProtocol<String> 
         }
 
 
-        if(command.equals("REGISTER")) new REGISTER(details).process();
+        if(command.equals("REGISTER")) new REGISTER(details, connectionId).process();
 
         else if(command.equals("LOGIN")) new LOGIN(details, connectionId).process();
 
@@ -57,6 +57,7 @@ public class BidiMessagingProtocolImpl implements BidiMessagingProtocol<String> 
         else if(command.equals("BLOCK")) ;
 
     }
+
     public void terminate(){
         terminate = true;
     }

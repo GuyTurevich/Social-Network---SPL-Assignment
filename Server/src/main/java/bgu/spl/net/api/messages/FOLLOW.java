@@ -20,30 +20,30 @@ public class FOLLOW implements Message<String> {
             String usernameToFollow = details.substring(details.indexOf(" ") + 1);
 
             if(!database.isRegistered(usernameToFollow)) { // User to follow/unfollow isn't registered
-                // Send ERROR
+                connections.send(connectionId, "ERROR 4");
             }
             else if(details.charAt(0) == '0'){ // FOLLOW
                 if(database.isFollowing(username, usernameToFollow)){ //Already Followed
-                    // Send ERROR
+                    connections.send(connectionId, "ERROR 4");
                 }
                 else{
                     database.follow(username, usernameToFollow);
-                    // Send Ack
+                    connections.send(connectionId, "ACK 4");
                 }
             }
             else{ // UNFOLLOW
                 if(!database.isFollowing(username, usernameToFollow)){ //Not Followed
-                    // Send ERROR
+                    connections.send(connectionId, "ERROR 4");
                 }
                 else{
                     database.unfollow(username, usernameToFollow);
-                    // Send ACK
+                    connections.send(connectionId, "ACK 4");
                 }
             }
 
         }
         else { // invalid arguments
-            // send ERROR
+            connections.send(connectionId, "ERROR 4");
         }
     }
 }
