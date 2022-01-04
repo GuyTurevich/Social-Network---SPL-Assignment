@@ -19,30 +19,29 @@ public class FOLLOW implements Message<String> {
             String username = database.getUsernameById(connectionId);
             String usernameToFollow = details.substring(details.indexOf(" ") + 1);
 
-            if(!database.isRegistered(usernameToFollow)) { // User to follow/unfollow isn't registered
+            if (!database.isRegistered(usernameToFollow) ||
+                    database.isBlocked(username, usernameToFollow) ||
+                    database.isBlocked(usernameToFollow, username)) { // User to follow/unfollow isn't registered
                 connections.send(connectionId, "ERROR 4");
             }
-            else if(details.charAt(0) == '0'){ // FOLLOW
-                if(database.isFollowing(username, usernameToFollow)){ //Already Followed
+            else if (details.charAt(0) == '0') { // FOLLOW
+                if (database.isFollowing(username, usernameToFollow)) { //Already Followed
                     connections.send(connectionId, "ERROR 4");
-                }
-                else{
+                } else {
                     database.follow(username, usernameToFollow);
-                    connections.send(connectionId, "ACK 4");
+                    connections.send(connectionId, "ACK 4 0 " + usernameToFollow);
                 }
             }
-            else{ // UNFOLLOW
-                if(!database.isFollowing(username, usernameToFollow)){ //Not Followed
+            else { // UNFOLLOW
+                if (!database.isFollowing(username, usernameToFollow)) { //Not Followed
                     connections.send(connectionId, "ERROR 4");
-                }
-                else{
+                } else {
                     database.unfollow(username, usernameToFollow);
-                    connections.send(connectionId, "ACK 4");
+                    connections.send(connectionId, "ACK 4 1 " + usernameToFollow);
                 }
             }
 
-        }
-        else { // invalid arguments
+        } else { // invalid arguments
             connections.send(connectionId, "ERROR 4");
         }
     }

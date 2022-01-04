@@ -48,19 +48,16 @@ public class BidiMessagingProtocolImpl implements BidiMessagingProtocol<String> 
 
         else if(command.equals("POST")) new POST(details, connectionId).process();
 
-        else if(command.equals("PM")) ;
+        else if(command.equals("PM")) new PM(details, connectionId).process();
 
-        else if(command.equals("LOGSTAT")) ;
+        else if(command.equals("LOGSTAT")) new LOGSTAT(connectionId).process();
 
-        else if(command.equals("STAT")) ;
+        else if(command.equals("STAT")) new STAT(details, connectionId).process();
 
-        else if(command.equals("BLOCK")) ;
+        else if(command.equals("BLOCK")) new BLOCK(details, connectionId).process();
 
     }
 
-    public void terminate(){
-        terminate = true;
-    }
 
     @Override
     public boolean shouldTerminate() {

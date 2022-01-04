@@ -17,6 +17,7 @@ public class POST implements Message<String> {
 
     @Override
     public void process() {
+        String thisUser = database.getUsernameById(connectionId);
         String [] temp = details.split(" ");
         LinkedList<String> taggedUsers = new LinkedList<>();
         for(String word : temp){
@@ -30,15 +31,18 @@ public class POST implements Message<String> {
                 return;
             }
             else
-                if(!database.isBlocked(username, database.getUsernameById(connectionId)))
+                if(!database.isBlocked(username, thisUser))
                     followers.add(username);
         }
+        String post = "";
         for(String username : followers){
+            post = "NOTIFICATION Public "+thisUser+" "+details;
             if(database.isLoggedIn(username))
-                connections.send(database.getIdByUsername(username),"NOTIFICATION Public " +  details);
+                connections.send(database.getIdByUsername(username), post);
             else
-                database.addMessageToQueue(username, "NOTIFICATION Public " + details);
+                database.addMessageToQueue(username, post);
             }
         connections.send(connectionId, "ACK 5");
+        database.savePost(thisUser, post);
     }
 }
