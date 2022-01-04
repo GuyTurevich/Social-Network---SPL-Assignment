@@ -17,13 +17,17 @@ public class LOGIN implements Message<String> {
         int spaceIndex = details.indexOf(" ");
         String username = details.substring(0,spaceIndex);
         String password = details.substring(spaceIndex+1);
-        if(!database.isRegistered(username)){
+
+        if(details.charAt(details.lastIndexOf(" ") + 1) == '0'){ // CAPTCHA Failed
             // send ERROR
         }
-        else if(database.isLoggedIn(username)){
+        else if(!database.isRegistered(username)){ // Not registered
             // send ERROR
         }
-        else if(!database.authenticate(username,password)){
+        else if(database.isLoggedIn(username)){ // Already logged-in
+            // send ERROR
+        }
+        else if(!database.authenticate(username,password)){ // Wrong Password
             // send ERROR
         }
         else{

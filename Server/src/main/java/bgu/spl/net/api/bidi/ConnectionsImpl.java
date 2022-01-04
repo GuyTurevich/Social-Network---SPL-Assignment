@@ -23,11 +23,11 @@ public class ConnectionsImpl<T> implements Connections<T> {
 
     @Override
     public boolean send(int connectionId, T msg) {
-        if(!clientsByIds.containsKey(connectionId))  return false;
-        else{
+//        if(!clientsByIds.containsKey(connectionId))  return false;
+//        else{
             clientsByIds.get(connectionId).send(msg);
             return true;
-        }
+//        }
     }
 
     @Override

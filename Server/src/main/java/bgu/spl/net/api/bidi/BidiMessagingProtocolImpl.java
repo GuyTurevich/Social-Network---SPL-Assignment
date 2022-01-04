@@ -1,8 +1,6 @@
 package bgu.spl.net.api.bidi;
 
-import bgu.spl.net.api.messages.LOGIN;
-import bgu.spl.net.api.messages.LOGOUT;
-import bgu.spl.net.api.messages.REGISTER;
+import bgu.spl.net.api.messages.*;
 import bgu.spl.net.srv.Database;
 
 public class BidiMessagingProtocolImpl implements BidiMessagingProtocol<String> {
@@ -36,13 +34,27 @@ public class BidiMessagingProtocolImpl implements BidiMessagingProtocol<String> 
 
         else if(command.equals("LOGIN")) new LOGIN(details, connectionId).process();
 
+        else if(!database.isLoggedIn(database.getUsernameById(connectionId))){
+            // Send ERROR - No user is logged in
+        }
+
         else if(command.equals("LOGOUT")){
             LOGOUT logout = new LOGOUT(connectionId, this);
             logout.process();
             if(logout.hasLoggedOut()) terminate = true;
         }
 
+        else if(command.equals("FOLLOW")) new FOLLOW(details, connectionId).process();
 
+        else if(command.equals("POST")) new POST(details, connectionId).process();
+
+        else if(command.equals("PM")) ;
+
+        else if(command.equals("LOGSTAT")) ;
+
+        else if(command.equals("STAT")) ;
+
+        else if(command.equals("BLOCK")) ;
 
     }
     public void terminate(){
