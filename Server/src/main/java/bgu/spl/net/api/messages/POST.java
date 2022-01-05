@@ -24,18 +24,20 @@ public class POST implements Message<String> {
             if(word.charAt(0) == '@')
                 taggedUsers.add(word.substring(1));
         }
-        ConcurrentLinkedDeque<String> followers = database.getFollowersList(connectionId);
+        ConcurrentLinkedDeque<String> usersToSend = database.getFollowersList(connectionId);
         for(String username : taggedUsers){
             if(!database.isRegistered(username)) {
                 connections.send(connectionId, "ERROR 5");
                 return;
             }
             else
-                if(!database.isBlocked(username, thisUser))
-                    followers.add(username);
+                if(!database.isBlocked(username, thisUser) &&
+                        !database.isBlocked(thisUser, username) &&
+                        !database.isFollowing(username, thisUser ))
+                    usersToSend.add(username);
         }
         String post = "";
-        for(String username : followers){
+        for(String username : usersToSend){
             post = "NOTIFICATION Public "+thisUser+" "+details;
             if(database.isLoggedIn(username))
                 connections.send(database.getIdByUsername(username), post);

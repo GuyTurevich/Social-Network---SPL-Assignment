@@ -55,6 +55,10 @@ public class Database {
 
     }
 
+    public String getNextMessage(String username){
+        return userMessageQueues.get(username).poll();
+    }
+
     public void logout(String username) {
         loggedInUsers.remove(username);
     }

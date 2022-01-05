@@ -33,6 +33,11 @@ public class LOGIN implements Message<String> {
         else{
             database.linkIdToUser(username, connectionId);
             connections.send(connectionId, "ACK 2");
+            String message = database.getNextMessage(username);
+            while(message != null){
+                connections.send(connectionId, message);
+                message = database.getNextMessage(username);
+            }
         }
 
     }
