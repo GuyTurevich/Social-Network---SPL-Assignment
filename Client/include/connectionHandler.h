@@ -49,6 +49,10 @@ public:
     void close();
 
     void shortToBytes(short opcode, char *cstr);
+
+    short bytesToShort(char *opcodebytes);
+
+    std::string findCommandString(short opcode);
 }; //class ConnectionHandler
  
 #endif
