@@ -5,12 +5,14 @@ import bgu.spl.net.srv.Database;
 
 public class BidiMessagingProtocolImpl implements BidiMessagingProtocol<String> {
 
-    Database database = Database.getInstance();
+    Database database;
     ConnectionsImpl<String> connections ;
     int connectionId;
-    boolean terminate = false;
+    boolean terminate;
 
-    public BidiMessagingProtocolImpl(){
+    public BidiMessagingProtocolImpl(Database _database){
+        database = _database;
+        terminate = false;
     }
 
     @Override

@@ -56,7 +56,7 @@ public class NonBlockingConnectionHandler<T> implements java.io.Closeable, Conne
             buf.flip();
             return () -> {
                 try {
-                    while (buf.hasRemaining()) {
+                    while (!protocol.shouldTerminate() && buf.hasRemaining()) {
                         T nextMessage = encdec.decodeNextByte(buf.get());
                         if (nextMessage != null) {
                             protocol.process(nextMessage);
@@ -64,11 +64,11 @@ public class NonBlockingConnectionHandler<T> implements java.io.Closeable, Conne
                     }
                 } finally {
                     releaseBuffer(buf);
+                    close();
                 }
             };
         } else {
             releaseBuffer(buf);
-            close();
             return null;
         }
 

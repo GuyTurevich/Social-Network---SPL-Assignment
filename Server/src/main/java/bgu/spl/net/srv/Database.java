@@ -55,6 +55,10 @@ public class Database {
 
     }
 
+    public String getNextMessage(String username){
+        return userMessageQueues.get(username).poll();
+    }
+
     public void logout(String username) {
         loggedInUsers.remove(username);
     }
@@ -136,9 +140,12 @@ public class Database {
     }
 
     public String filterMessage(String message) {
+        message = " " + message + " "; // making sure it will filter first and last word if needed
         for (String word : filteredWords) {
-            message = message.replaceAll("(?i)" + word, "<filtered>");
+            message = message.replaceAll("(?i)" + " "+word+" ", "<filtered>");
         }
+        if(message.charAt(0) == ' ') message = message.substring(1); //making sure no spaces were added to the message
+        if(message.charAt(message.length() - 1) == ' ') message = message.substring(0,message.length() - 1);
         return message;
     }
 

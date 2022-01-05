@@ -19,7 +19,7 @@ public class REGISTER implements Message<String> {
         int space2 = details.lastIndexOf(" ");
         User user = new User(details.substring(0, space1),
                 details.substring(space1 + 1, space2),
-                details.substring(space2 + 1, space2 + 11));
+                details.substring(space2 + 1));
         if (database.isRegistered(user.getUsername())) {
             connections.send(connectionId, "ERROR 1");
         } else {
