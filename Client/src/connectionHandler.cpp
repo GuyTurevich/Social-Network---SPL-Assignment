@@ -64,11 +64,18 @@ bool ConnectionHandler::sendBytes(const char bytes[], int bytesToWrite) {
 }
  
 bool ConnectionHandler::getLine(std::string& line) {
-    return getFrameAscii(line, '\n');
+    return getFrameAscii(line, ';');
 }
 
-bool ConnectionHandler::sendLine(std::string& line) {
-    return sendFrameAscii(line, '\n');
+bool ConnectionHandler::sendLine(std::string& line,short opcode) {
+    //replace all spaces with "\0"
+    std::replace(line.begin(),line.end(),' ', '\0');
+
+    // add a " ;" to the end of the string
+    line.push_back(' ');
+    line.push_back(';');
+
+    return sendFrameAscii(line, ';',opcode);
 }
  
 bool ConnectionHandler::getFrameAscii(std::string& frame, char delimiter) {
@@ -87,8 +94,13 @@ bool ConnectionHandler::getFrameAscii(std::string& frame, char delimiter) {
     return true;
 }
  
-bool ConnectionHandler::sendFrameAscii(const std::string& frame, char delimiter) {
-	bool result=sendBytes(frame.c_str(),frame.length());
+bool ConnectionHandler::sendFrameAscii(const std::string& frame, char delimiter,short opcode) {
+    std::string newFrame = '\0' + frame;
+    char *cstr = new char [newFrame.length()+2];
+    shortToBytes(opcode,cstr);
+    strcpy(cstr+2,newFrame.c_str());
+
+	bool result=sendBytes(cstr,newFrame.length()+2);
 	if(!result) return false;
 	return sendBytes(&delimiter,1);
 }
@@ -101,3 +113,27 @@ void ConnectionHandler::close() {
         std::cout << "closing failed: connection already closed" << std::endl;
     }
 }
+
+
+
+//Encode short to 2 bytes
+void ConnectionHandler::shortToBytes(short num, char *bytesArr) {
+    bytesArr[0] = ((num >> 8) & 0xFF);
+
+    bytesArr[1] = (num & 0xFF);
+}
+
+//Decode 2 bytes to short
+
+short bytesToShort(char* bytesArr){
+
+    short result = (short)((bytesArr[0] & 0xff) << 8);
+
+    result += (short)(bytesArr[1] & 0xff);
+
+    return result;
+}
+
+
+
+
