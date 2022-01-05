@@ -23,46 +23,43 @@ public class BidiMessagingProtocolImpl implements BidiMessagingProtocol<String> 
 
     @Override
     public void process(String message) {
-        int spaceIndex = message.indexOf(" ");
-        String command, details = null;
-        if (spaceIndex == -1) command = message;
-        else {
-            command = message.substring(0,spaceIndex);
-            details = message.substring(spaceIndex+1);
+        if(!terminate) {
+            int spaceIndex = message.indexOf(" ");
+            String command, details = null;
+            if (spaceIndex == -1) command = message;
+            else {
+                command = message.substring(0, spaceIndex);
+                details = message.substring(spaceIndex + 1);
+            }
+
+
+            if (command.equals("REGISTER")) new REGISTER(details, connectionId).process();
+
+            else if (command.equals("LOGIN")) new LOGIN(details, connectionId).process();
+
+            else if (!database.isLoggedIn(database.getUsernameById(connectionId))) {
+                // Send ERROR - No user is logged in
+            } else if (command.equals("LOGOUT")) {
+                LOGOUT logout = new LOGOUT(connectionId, this);
+                logout.process();
+                if (logout.hasLoggedOut()) shouldTerminate();
+            } else if (command.equals("FOLLOW")) new FOLLOW(details, connectionId).process();
+
+            else if (command.equals("POST")) new POST(details, connectionId).process();
+
+            else if (command.equals("PM")) new PM(details, connectionId).process();
+
+            else if (command.equals("LOGSTAT")) new LOGSTAT(connectionId).process();
+
+            else if (command.equals("STAT")) new STAT(details, connectionId).process();
+
+            else if (command.equals("BLOCK")) new BLOCK(details, connectionId).process();
         }
-
-
-        if(command.equals("REGISTER")) new REGISTER(details, connectionId).process();
-
-        else if(command.equals("LOGIN")) new LOGIN(details, connectionId).process();
-
-        else if(!database.isLoggedIn(database.getUsernameById(connectionId))){
-            // Send ERROR - No user is logged in
-        }
-
-        else if(command.equals("LOGOUT")){
-            LOGOUT logout = new LOGOUT(connectionId, this);
-            logout.process();
-            if(logout.hasLoggedOut()) terminate = true;
-        }
-
-        else if(command.equals("FOLLOW")) new FOLLOW(details, connectionId).process();
-
-        else if(command.equals("POST")) new POST(details, connectionId).process();
-
-        else if(command.equals("PM")) new PM(details, connectionId).process();
-
-        else if(command.equals("LOGSTAT")) new LOGSTAT(connectionId).process();
-
-        else if(command.equals("STAT")) new STAT(details, connectionId).process();
-
-        else if(command.equals("BLOCK")) new BLOCK(details, connectionId).process();
-
     }
 
 
     @Override
     public boolean shouldTerminate() {
-        return terminate;
+        return terminate = true;
     }
 }
