@@ -30,21 +30,21 @@ bool readKeyBoard(ConnectionHandler *connectionHandler) {
 
 
         if (operation == ("REGISTER")) {
-            delivered = connectionHandler->sendLine(line, 1);
+            delivered = connectionHandler->sendLine(line, 01);
         } else if (operation==("LOGIN")) {
-            delivered = connectionHandler->sendLine(line, 2);
+            delivered = connectionHandler->sendLine(line, 02);
         } else if (operation==("LOGOUT")) {
-            delivered = connectionHandler->sendLine(line, 3);
+            delivered = connectionHandler->sendLine(line, 03);
         } else if (operation==("FOLLOW") || operation.compare("UNFOLLOW")) {
-            delivered = connectionHandler->sendLine(line, 4);
+            delivered = connectionHandler->sendLine(line, 04);
         } else if (operation==("POST")) {
-            delivered = connectionHandler->sendLine(line, 5);
+            delivered = connectionHandler->sendLine(line, 05);
         } else if (operation==("PM")) {
-            delivered = connectionHandler->sendLine(line, 6);
+            delivered = connectionHandler->sendLine(line, 06);
         } else if (operation==("LOGSTAT")) {
-            delivered = connectionHandler->sendLine(line, 7);
+            delivered = connectionHandler->sendLine(line, 07);
         } else if (operation==("STAT")) {
-            delivered = connectionHandler->sendLine(line, 8);
+            delivered = connectionHandler->sendLine(line,8);
         } else if (operation==("BLOCK")) {
             delivered = connectionHandler->sendLine(line, 12);
         }
@@ -89,7 +89,7 @@ int main (int argc, char *argv[]) {
     }
 
     std::thread write(readKeyBoard,&connectionHandler);
-    std::thread read(readFromSocket,&connectionHandler);
+    readFromSocket(&connectionHandler);
 //    read.join();
     write.join();
 

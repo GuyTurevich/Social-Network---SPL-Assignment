@@ -125,11 +125,11 @@ bool ConnectionHandler::sendFrameAscii(const std::string& frame, char delimiter,
     char *bytes = new char [2];
 //    bytes[0]='1';
 //    bytes[1]='0';
+    int opPosition = frame.find(' ');
+    std::string newFrame = frame.substr(opPosition+1);
     shortToBytes(opcode,bytes);
     bool result= sendBytes(bytes,2);
     result = sendBytes("\0",1);
-    int opPosition = frame.find(' ');
-    std::string newFrame = frame.substr(opPosition+1);
     result = sendBytes(newFrame.c_str(),newFrame.length());
     result = sendBytes("\0",1);
 
