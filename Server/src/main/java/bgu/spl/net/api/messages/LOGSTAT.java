@@ -1,18 +1,21 @@
 package bgu.spl.net.api.messages;
 
+import bgu.spl.net.api.bidi.ConnectionsImpl;
 import bgu.spl.net.api.bidi.Message;
+import bgu.spl.net.srv.Database;
 
 import java.util.concurrent.ConcurrentLinkedDeque;
 
-public class LOGSTAT implements Message<String> {
+public class LOGSTAT extends Message<String> {
 
     private int connectionId;
 
     public LOGSTAT(int _connectionId) {
+        super(Database.getInstance(), ConnectionsImpl.getInstance());
         connectionId = _connectionId;
     }
 
-    @Override
+
     public void process() {
         String thisUser = database.getUsernameById(connectionId);
         String output = "";

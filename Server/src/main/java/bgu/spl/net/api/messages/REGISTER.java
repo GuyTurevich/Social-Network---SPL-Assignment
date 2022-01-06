@@ -1,19 +1,22 @@
 package bgu.spl.net.api.messages;
 
+import bgu.spl.net.api.bidi.ConnectionsImpl;
 import bgu.spl.net.api.bidi.Message;
+import bgu.spl.net.srv.Database;
 import bgu.spl.net.srv.User;
 
-public class REGISTER implements Message<String> {
+public class REGISTER extends Message<String> {
 
     private String details;
     private int connectionId;
 
     public REGISTER(String _details, int _connectionId) {
+        super(Database.getInstance(), ConnectionsImpl.getInstance());
         details = _details;
         connectionId = _connectionId;
     }
 
-    @Override
+
     public void process() {
         int space1 = details.indexOf(" ");
         int space2 = details.lastIndexOf(" ");

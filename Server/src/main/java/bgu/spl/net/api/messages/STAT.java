@@ -1,18 +1,20 @@
 package bgu.spl.net.api.messages;
 
+import bgu.spl.net.api.bidi.ConnectionsImpl;
 import bgu.spl.net.api.bidi.Message;
+import bgu.spl.net.srv.Database;
 
-public class STAT implements Message<String> {
+public class STAT extends Message<String> {
 
     private String details;
     private int connectionId;
 
     public STAT(String _details, int _connectionId) {
+        super(Database.getInstance(), ConnectionsImpl.getInstance());
         details = _details;
         connectionId = _connectionId;
     }
 
-    @Override
     public void process() {
 
         String thisUser = database.getUsernameById(connectionId);

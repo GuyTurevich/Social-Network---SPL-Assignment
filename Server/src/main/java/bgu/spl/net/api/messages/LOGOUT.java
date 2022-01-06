@@ -1,20 +1,23 @@
 package bgu.spl.net.api.messages;
 
 import bgu.spl.net.api.bidi.BidiMessagingProtocol;
+import bgu.spl.net.api.bidi.ConnectionsImpl;
 import bgu.spl.net.api.bidi.Message;
+import bgu.spl.net.srv.Database;
 
-public class LOGOUT implements Message<String> {
+public class LOGOUT extends Message<String> {
 
     private int connectionId;
     private  BidiMessagingProtocol<String> protocol;
     private boolean hasLoggedOut;
 
     public LOGOUT(int _connectionId, BidiMessagingProtocol<String> _protocol) {
+        super(Database.getInstance(), ConnectionsImpl.getInstance());
         connectionId = _connectionId;
         protocol = _protocol;
     }
 
-    @Override
+
     public void process() {
 
         String username = database.getUsernameById(connectionId);

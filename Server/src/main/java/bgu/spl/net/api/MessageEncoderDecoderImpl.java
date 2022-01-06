@@ -1,5 +1,6 @@
 package bgu.spl.net.api;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 public class MessageEncoderDecoderImpl<T> implements MessageEncoderDecoder<String> {
@@ -10,21 +11,28 @@ public class MessageEncoderDecoderImpl<T> implements MessageEncoderDecoder<Strin
 
     @Override
     public String decodeNextByte(byte nextByte) {
-        if(currIndex<2)
+        if (currIndex < 2)
             opCode[currIndex++] = nextByte;
-        else{
-            if(nextByte == ';') {
+        else {
+            if (nextByte == ';') {
+
+                StringBuilder message = new StringBuilder(shortToString(bytesToShort(opCode)));
+                for (int i = 2; i < currIndex; i++) {
+                    if (bytes[i] == 0)
+                        message.append(' ');
+                    else message.append(new String(bytes, i, 1, StandardCharsets.UTF_8));
+                }
                 currIndex = 0;
-                return shortToString(bytesToShort(opCode)) + " " + bytes.toString().replaceAll("\0", " ") + ";";
+                return message.toString() + ";";
             }
             pushByte(nextByte);
         }
         return null;
     }
 
-    private void pushByte(byte nextByte){
-        if (currIndex>= bytes.length)
-            bytes = Arrays.copyOf(bytes, currIndex*2); //  if there is no enough space in the array, copy bytes to new array of doubled size
+    private void pushByte(byte nextByte) {
+        if (currIndex >= bytes.length)
+            bytes = Arrays.copyOf(bytes, currIndex * 2); //  if there is no enough space in the array, copy bytes to new array of doubled size
         bytes[currIndex++] = nextByte;
     }
 

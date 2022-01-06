@@ -1,18 +1,21 @@
 package bgu.spl.net.api.messages;
 
+import bgu.spl.net.api.bidi.ConnectionsImpl;
 import bgu.spl.net.api.bidi.Message;
+import bgu.spl.net.srv.Database;
 
-public class LOGIN implements Message<String> {
+public class LOGIN extends Message<String> {
 
     private String details;
     private int connectionId;
 
     public LOGIN(String _details, int _connectionId) {
+        super(Database.getInstance(), ConnectionsImpl.getInstance());
         details = _details;
         connectionId = _connectionId;
     }
 
-    @Override
+
     public void process() {
         int spaceIndex = details.indexOf(" ");
         String username = details.substring(0,spaceIndex);

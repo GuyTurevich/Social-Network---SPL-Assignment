@@ -2,10 +2,13 @@ package bgu.spl.net.api.bidi;
 
 import bgu.spl.net.srv.Database;
 
-public interface Message<T> {
+public class Message<T> {
 
-    public ConnectionsImpl connections = ConnectionsImpl.getInstance();
-    public Database database = Database.getInstance();
+    protected ConnectionsImpl connections;
+    protected Database database;
 
-    public void process();
+    public Message(Database _database, ConnectionsImpl _connections) {
+        connections = _connections;
+        database = _database;
+    }
 }

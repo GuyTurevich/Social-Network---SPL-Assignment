@@ -1,21 +1,23 @@
 package bgu.spl.net.api.messages;
 
+import bgu.spl.net.api.bidi.ConnectionsImpl;
 import bgu.spl.net.api.bidi.Message;
+import bgu.spl.net.srv.Database;
 
 import java.util.LinkedList;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
-public class POST implements Message<String> {
+public class POST extends Message<String> {
 
     private String details;
     private int connectionId;
 
     public POST(String _details, int _connectionId) {
+        super(Database.getInstance(), ConnectionsImpl.getInstance());
         details = _details;
         connectionId = _connectionId;
     }
 
-    @Override
     public void process() {
         String thisUser = database.getUsernameById(connectionId);
         String [] temp = details.split(" ");

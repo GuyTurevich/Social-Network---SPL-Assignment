@@ -1,21 +1,24 @@
 package bgu.spl.net.api.messages;
 
+import bgu.spl.net.api.bidi.ConnectionsImpl;
 import bgu.spl.net.api.bidi.Message;
+import bgu.spl.net.srv.Database;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class PM implements Message<String> {
+public class PM extends Message<String> {
 
     private String details;
     private int connectionId;
 
     public PM(String _details, int _connectionId) {
+        super(Database.getInstance(), ConnectionsImpl.getInstance());
         details = _details;
         connectionId = _connectionId;
     }
 
-    @Override
+
     public void process() {
         String username = database.getUsernameById(connectionId);
         String recipient = details.substring(0,details.indexOf(" "));

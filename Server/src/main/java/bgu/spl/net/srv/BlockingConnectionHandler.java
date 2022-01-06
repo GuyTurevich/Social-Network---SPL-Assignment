@@ -32,6 +32,7 @@ public class BlockingConnectionHandler<T> implements Runnable, Closeable, Connec
         this.protocol = protocol;
         this.connections = connections;
         this.connectionId = connectionId;
+        connections.connect(connectionId, this);
     }
 
     @Override

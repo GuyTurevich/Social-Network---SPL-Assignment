@@ -1,18 +1,21 @@
 package bgu.spl.net.api.messages;
 
+import bgu.spl.net.api.bidi.ConnectionsImpl;
 import bgu.spl.net.api.bidi.Message;
+import bgu.spl.net.srv.Database;
 
-public class BLOCK implements Message<String> {
+public class BLOCK extends Message<String> {
 
     private String details;
     private int connectionId;
 
     public BLOCK(String _details, int _connectionId) {
+        super(Database.getInstance(), ConnectionsImpl.getInstance());
         details = _details;
         connectionId = _connectionId;
     }
 
-    @Override
+
     public void process() {
 
         String blockerUsername = database.getUsernameById(connectionId);
