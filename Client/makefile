@@ -4,7 +4,7 @@ LDFLAGS:=-lboost_system
 all: EchoClient
 	@echo 'Building target: EchoClient'
 	@echo 'Invoking: C++ Linker'
-	g++ -o bin/echoExample bin/connectionHandler.o bin/echoClient.o $(LDFLAGS)
+	g++ -o bin/echoClient bin/connectionHandler.o bin/echoClient.o $(LDFLAGS)
 	@echo 'Finished building target: main'
 
 EchoClient: bin/connectionHandler.o bin/echoClient.o
