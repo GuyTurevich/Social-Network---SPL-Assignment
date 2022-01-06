@@ -5,7 +5,7 @@ import bgu.spl.net.api.bidi.BidiMessagingProtocolImpl;
 
 public class TPCMain {
     public static void main(String[] args) {
-        
+
         try (Server<String> TPCServer = Server.threadPerClient(1007,
                 () -> new BidiMessagingProtocolImpl(new Database()), MessageEncoderDecoderImpl::new);) {
             TPCServer.serve();
