@@ -29,23 +29,23 @@ bool readKeyBoard(ConnectionHandler *connectionHandler) {
         bool delivered;
 
 
-        if (operation.compare("REGISTER")) {
+        if (operation == ("REGISTER")) {
             delivered = connectionHandler->sendLine(line, 1);
-        } else if (operation.compare("LOGIN")) {
+        } else if (operation==("LOGIN")) {
             delivered = connectionHandler->sendLine(line, 2);
-        } else if (operation.compare("LOGOUT")) {
+        } else if (operation==("LOGOUT")) {
             delivered = connectionHandler->sendLine(line, 3);
-        } else if (operation.compare("FOLLOW") || operation.compare("UNFOLLOW")) {
+        } else if (operation==("FOLLOW") || operation.compare("UNFOLLOW")) {
             delivered = connectionHandler->sendLine(line, 4);
-        } else if (operation.compare("POST")) {
+        } else if (operation==("POST")) {
             delivered = connectionHandler->sendLine(line, 5);
-        } else if (operation.compare("PM")) {
+        } else if (operation==("PM")) {
             delivered = connectionHandler->sendLine(line, 6);
-        } else if (operation.compare("LOGSTAT")) {
+        } else if (operation==("LOGSTAT")) {
             delivered = connectionHandler->sendLine(line, 7);
-        } else if (operation.compare("STAT")) {
+        } else if (operation==("STAT")) {
             delivered = connectionHandler->sendLine(line, 8);
-        } else if (operation.compare("BLOCK")) {
+        } else if (operation==("BLOCK")) {
             delivered = connectionHandler->sendLine(line, 12);
         }
 

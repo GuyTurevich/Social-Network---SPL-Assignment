@@ -69,7 +69,11 @@ bool ConnectionHandler::getLine(std::string& line) {
 
 bool ConnectionHandler::sendLine(std::string& line,short opcode) {
     //replace all spaces with "\0"
-    std::replace(line.begin(),line.end(),' ', '\0');
+//    for (auto &ch :line){
+//        if (ch==' ')
+//            ch= '0';
+//    }
+//    std::replace(line.begin(),line.end(),' ', "\0");
 
     // add a ";" to the end of the string
     /// line.push_back(' '); not sure if space is needed
@@ -100,8 +104,9 @@ bool ConnectionHandler::getFrameAscii(std::string& frame, char delimiter) {
                 else {
                     opcodebytes[1]=ch;
                     opcode = bytesToShort(opcodebytes);
-                    command=findCommandString(opcode);
-                    frame.append(command);
+
+//                    command=findCommandString(opcode);
+//                    frame.append(command);
                 }
             }
             i++;
@@ -117,12 +122,18 @@ bool ConnectionHandler::getFrameAscii(std::string& frame, char delimiter) {
 }
  
 bool ConnectionHandler::sendFrameAscii(const std::string& frame, char delimiter,short opcode) {
-    std::string newFrame = '\0' + frame;
-    char *cstr = new char [newFrame.length()+2];
-    shortToBytes(opcode,cstr);
-    strcpy(cstr+2,newFrame.c_str());
+    char *bytes = new char [2];
+//    bytes[0]='1';
+//    bytes[1]='0';
+    shortToBytes(opcode,bytes);
+    bool result= sendBytes(bytes,2);
+    result = sendBytes("\0",1);
+    int opPosition = frame.find(' ');
+    std::string newFrame = frame.substr(opPosition+1);
+    result = sendBytes(newFrame.c_str(),newFrame.length());
+    result = sendBytes("\0",1);
 
-	bool result=sendBytes(cstr,newFrame.length()+2);
+
 	if(!result) return false;
 	return sendBytes(&delimiter,1);
 }
