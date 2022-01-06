@@ -1,20 +1,17 @@
 CFLAGS:=-c -Wall -Weffc++ -g -std=c++11 -Iinclude
-LDFLAGS:=-lboost_system
+LDFLAGS:=-lboost_system -pthread
 
-all: EchoClient
-	@echo 'Building target: EchoClient'
-	@echo 'Invoking: C++ Linker'
-	g++ -o bin/echoClient bin/connectionHandler.o bin/echoClient.o $(LDFLAGS)
-	@echo 'Finished building target: main'
+all: BGSClient
+	g++ -o bin/BGSClient bin/connectionHandler.o bin/BGSClient.o $(LDFLAGS)
 
-EchoClient: bin/connectionHandler.o bin/echoClient.o
+BGSClient: bin/connectionHandler.o bin/BGSClient.o
 
 bin/connectionHandler.o: src/connectionHandler.cpp
 	g++ $(CFLAGS) -o bin/connectionHandler.o src/connectionHandler.cpp
 
-bin/echoClient.o: src/echoClient.cpp
-	g++ $(CFLAGS) -o bin/echoClient.o src/echoClient.cpp
-	
+bin/BGSClient.o: src/BGSClient.cpp
+	g++ $(CFLAGS) -o bin/BGSClient.o src/BGSClient.cpp
+
 .PHONY: clean
 clean:
 	rm -f bin/*
