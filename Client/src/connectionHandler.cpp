@@ -94,8 +94,9 @@ bool ConnectionHandler::getFrameAscii(std::string& frame, char delimiter) {
             if (i>1)
                 frame.append(1, ch);
             else{
-                if (i=0)
-                    opcodebytes[0]=ch;                        ///why is this not reachable
+                if (i==0){
+                    opcodebytes[0]=ch;                 ///why is this not reachable
+                    }
                 else {
                     opcodebytes[1]=ch;
                     opcode = bytesToShort(opcodebytes);
