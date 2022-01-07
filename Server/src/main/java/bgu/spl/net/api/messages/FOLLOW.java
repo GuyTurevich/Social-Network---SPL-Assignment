@@ -17,35 +17,35 @@ public class FOLLOW extends Message<String> {
 
 
     public void process() {
-        if (details.charAt(0) == '0' || details.charAt(0) == '1') {
 
-            String username = database.getUsernameById(connectionId);
-            String usernameToFollow = details.substring(details.indexOf(" ") + 1);
-
-            if (!database.isRegistered(usernameToFollow) ||
-                    database.isBlocked(username, usernameToFollow) ||
-                    database.isBlocked(usernameToFollow, username)) { // User to follow/unfollow isn't registered
-                connections.send(connectionId, "ERROR 4");
-            }
-            else if (details.charAt(0) == '0') { // FOLLOW
-                if (database.isFollowing(username, usernameToFollow)) { //Already Followed
-                    connections.send(connectionId, "ERROR 4");
-                } else {
-                    database.follow(username, usernameToFollow);
-                    connections.send(connectionId, "ACK 4 0 " + usernameToFollow);
-                }
-            }
-            else { // UNFOLLOW
-                if (!database.isFollowing(username, usernameToFollow)) { //Not Followed
-                    connections.send(connectionId, "ERROR 4");
-                } else {
-                    database.unfollow(username, usernameToFollow);
-                    connections.send(connectionId, "ACK 4 1 " + usernameToFollow);
-                }
-            }
-
-        } else { // invalid arguments
-            connections.send(connectionId, "ERROR 4");
+        String username = database.getUsernameById(connectionId);
+        String[] arguments = details.split(" ");
+        if (arguments.length != 2 || (!arguments[0].equals("0") && !arguments[0].equals("1"))) {
+            connections.send(connectionId, "ERROR 2");
+            return;
         }
+        String usernameToFollow = arguments[1];
+
+        if (!database.isRegistered(usernameToFollow) ||
+                database.isBlocked(username, usernameToFollow) ||
+                database.isBlocked(usernameToFollow, username)) { // User to follow/unfollow isn't registered
+            connections.send(connectionId, "ERROR 4");
+        } else if (arguments[0].equals("0")) { // FOLLOW
+            if (database.isFollowing(username, usernameToFollow)) { //Already Followed
+                connections.send(connectionId, "ERROR 4");
+            } else {
+                database.follow(username, usernameToFollow);
+                connections.send(connectionId, "ACK 4 0 " + usernameToFollow);
+            }
+        } else { // UNFOLLOW
+            if (!database.isFollowing(username, usernameToFollow)) { //Not Followed
+                connections.send(connectionId, "ERROR 4");
+            } else {
+                database.unfollow(username, usernameToFollow);
+                connections.send(connectionId, "ACK 4 1 " + usernameToFollow);
+            }
+        }
+
+
     }
 }
