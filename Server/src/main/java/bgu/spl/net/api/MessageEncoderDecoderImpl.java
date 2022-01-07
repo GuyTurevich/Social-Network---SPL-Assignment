@@ -23,7 +23,7 @@ public class MessageEncoderDecoderImpl<T> implements MessageEncoderDecoder<Strin
                     else message.append(new String(bytes, i, 1, StandardCharsets.UTF_8));
                 }
                 currIndex = 0;
-                return message.toString() + ";";
+                return message.toString();
             }
             pushByte(nextByte);
         }

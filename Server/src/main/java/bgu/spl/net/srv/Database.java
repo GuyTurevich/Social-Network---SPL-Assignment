@@ -197,4 +197,32 @@ public class Database {
             following.get(usernameToBlock).remove(blockerUsername);
 
     }
+
+    public short stringToShort(String command) {
+        if (command.equals("REGISTER"))
+            return 1;
+        if (command.equals("LOGIN"))
+            return 2;
+        if (command.equals("LOGOUT"))
+            return 3;
+        if (command.equals("FOLLOW"))
+            return 4;
+        if (command.equals("POST"))
+            return 5;
+        if (command.equals("PM"))
+            return 6;
+        if (command.equals("LOGSTAT"))
+            return 7;
+        if (command.equals("STAT"))
+            return 8;
+        if (command.equals("NOTIFICATION"))
+            return 9;
+        if (command.equals("ACK"))
+            return 10;
+        if (command.equals("ERROR"))
+            return 11;
+        if (command.equals("BLOCK"))
+            return 12;
+        return -1;
+    }
 }

@@ -8,18 +8,20 @@ public class LOGIN extends Message<String> {
 
     private String details;
     private int connectionId;
+    private boolean hasLoggedIn;
 
     public LOGIN(String _details, int _connectionId) {
         super(Database.getInstance(), ConnectionsImpl.getInstance());
         details = _details;
         connectionId = _connectionId;
+        hasLoggedIn = false;
     }
 
 
     public void process() {
         int spaceIndex = details.indexOf(" ");
         String username = details.substring(0,spaceIndex);
-        String password = details.substring(spaceIndex+1);
+        String password = details.substring(spaceIndex+1, details.length()-2);
 
         if(details.charAt(details.lastIndexOf(" ") + 1) == '0'){ // CAPTCHA Failed
             connections.send(connectionId, "ERROR 2");
@@ -41,7 +43,12 @@ public class LOGIN extends Message<String> {
                 connections.send(connectionId, message);
                 message = database.getNextMessage(username);
             }
+            hasLoggedIn = true;
         }
 
+    }
+
+    public boolean hasLoggedIn() {
+        return hasLoggedIn;
     }
 }
