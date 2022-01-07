@@ -19,11 +19,17 @@ public class LOGIN extends Message<String> {
 
 
     public void process() {
-        int spaceIndex = details.indexOf(" ");
-        String username = details.substring(0,spaceIndex);
-        String password = details.substring(spaceIndex+1, details.length()-2);
 
-        if(details.charAt(details.lastIndexOf(" ") + 1) == '0'){ // CAPTCHA Failed
+        String[] arguments = details.split(" ");
+        if(arguments.length != 3){
+            connections.send(connectionId, "ERROR 2");
+            return;
+        }
+        String username = arguments[0];
+        String password = arguments[1];
+        String captcha = arguments[2];
+
+        if(!captcha.equals("1")){ // CAPTCHA Failed
             connections.send(connectionId, "ERROR 2");
         }
         else if(!database.isRegistered(username)){ // Not registered
