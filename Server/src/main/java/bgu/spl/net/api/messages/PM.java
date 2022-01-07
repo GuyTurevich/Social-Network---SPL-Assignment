@@ -31,9 +31,9 @@ public class PM extends Message<String> {
             String filteredMessage = "NOTIFICATION PM "+username+" "+database.filterMessage(message);
             filteredMessage = filteredMessage + new SimpleDateFormat(" dd-MM-yyyy HH:mm").format(new Date());
             if(database.isLoggedIn(recipient))
-                connections.send(database.getIdByUsername(username), filteredMessage);
+                connections.send(database.getIdByUsername(recipient), filteredMessage);
             else
-                database.addMessageToQueue(username, filteredMessage);
+                database.addMessageToQueue(recipient, filteredMessage);
             connections.send(connectionId, "ACK 6");
             database.savePM(username, filteredMessage);
         }
