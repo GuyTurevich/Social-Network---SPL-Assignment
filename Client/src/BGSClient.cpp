@@ -67,7 +67,7 @@ bool readFromSocket(ConnectionHandler* connectionHandler) {
 
         std::cout << response << std::endl;
 
-        if (response.compare("ACK 3")) {
+        if (response==("ACK 3")) {
             break;
         }
     }
