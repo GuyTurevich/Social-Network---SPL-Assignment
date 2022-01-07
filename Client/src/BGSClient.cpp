@@ -13,39 +13,48 @@ bool readKeyBoard(ConnectionHandler *connectionHandler) {
         char buf[bufsize];
         std::cin.getline(buf, bufsize);
         std::string line(buf);
-        //test if this works
-        std::cout
-                << "the next row is to check if moving the char array to string worked. we should see a string of a command from client"
-                << std::endl;
-        std::cout << line << std::endl;
-//        int len = line.length();
+
         std::string operation;
 
         //get operation from line
-        for (int i = 0; line[i] != ' '; i++) {
-            operation.push_back(line[i]);
+        size_t found = line.find(' ');
+        if (found!=std::string::npos){
+            for (int i = 0; line[i] != ' '; i++) {
+                operation.push_back(line[i]);
+            }
         }
+        else operation=line;
+
+
 
         bool delivered;
 
 
-        if (operation == ("REGISTER")) {
+        if (operation == "REGISTER") {
             delivered = connectionHandler->sendLine(line, 01);
-        } else if (operation==("LOGIN")) {
+        }
+        if (operation=="LOGIN") {
             delivered = connectionHandler->sendLine(line, 02);
-        } else if (operation==("LOGOUT")) {
+        }
+        if (operation == "LOGOUT") {
             delivered = connectionHandler->sendLine(line, 03);
-        } else if (operation==("FOLLOW") || operation.compare("UNFOLLOW")) {
+        }
+        if (operation=="FOLLOW") {
             delivered = connectionHandler->sendLine(line, 04);
-        } else if (operation==("POST")) {
+        }
+        if (operation=="POST") {
             delivered = connectionHandler->sendLine(line, 05);
-        } else if (operation==("PM")) {
+        }
+        if (operation=="PM") {
             delivered = connectionHandler->sendLine(line, 06);
-        } else if (operation==("LOGSTAT")) {
+        }
+        if (operation=="LOGSTAT") {
             delivered = connectionHandler->sendLine(line, 07);
-        } else if (operation==("STAT")) {
+        }
+        if (operation=="STAT") {
             delivered = connectionHandler->sendLine(line,8);
-        } else if (operation==("BLOCK")) {
+        }
+        if (operation=="BLOCK") {
             delivered = connectionHandler->sendLine(line, 12);
         }
 
@@ -64,7 +73,7 @@ bool readFromSocket(ConnectionHandler* connectionHandler) {
             std::cout << "Disconnected. Exiting...\n" << std::endl;
             break;
         }
-
+        response=response.substr(0,response.length()-1);
         std::cout << response << std::endl;
 
         if (response==("ACK 3")) {
