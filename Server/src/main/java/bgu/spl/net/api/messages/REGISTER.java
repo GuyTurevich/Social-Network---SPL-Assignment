@@ -18,14 +18,17 @@ public class REGISTER extends Message<String> {
 
 
     public void process() {
-        int space1 = details.indexOf(" ");
-        int space2 = details.lastIndexOf(" ");
-        User user = new User(details.substring(0, space1),
-                details.substring(space1 + 1, space2),
-                details.substring(space2 + 1));
+        String[] arguments = details.split(" ");
+        if (arguments.length != 3) {
+            connections.send(connectionId, "ERROR 1");
+            return;
+        }
+        User user = new User(arguments[0], arguments[1], arguments[2]);
+
         if (database.isRegistered(user.getUsername())) {
             connections.send(connectionId, "ERROR 1");
-        } else {
+        }
+        else {
             database.addUser(user);
             connections.send(connectionId, "ACK 1");
         }
