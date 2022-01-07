@@ -21,7 +21,7 @@ public class STAT extends Message<String> {
         String[] usernames = details.split("\\|");
         String output = "";
         for(String username : usernames){
-            if(!database.isBlocked(username, thisUser) && !database.isBlocked(thisUser, username)){
+            if(database.isBlocked(username, thisUser) || database.isBlocked(thisUser, username)){
                 connections.send(connectionId, "ERROR 8");
                 return;
             }

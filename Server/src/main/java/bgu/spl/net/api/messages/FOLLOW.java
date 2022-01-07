@@ -28,7 +28,8 @@ public class FOLLOW extends Message<String> {
 
         if (!database.isRegistered(usernameToFollow) ||
                 database.isBlocked(username, usernameToFollow) ||
-                database.isBlocked(usernameToFollow, username)) { // User to follow/unfollow isn't registered
+                database.isBlocked(usernameToFollow, username) ||
+                username.equals(usernameToFollow)) { // User to follow/unfollow isn't registered or try to follow itself
             connections.send(connectionId, "ERROR 4");
         } else if (arguments[0].equals("0")) { // FOLLOW
             if (database.isFollowing(username, usernameToFollow)) { //Already Followed
