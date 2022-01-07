@@ -33,28 +33,28 @@ bool readKeyBoard(ConnectionHandler *connectionHandler) {
         if (operation == "REGISTER") {
             delivered = connectionHandler->sendLine(line, 01);
         }
-        if (operation=="LOGIN") {
+        else if (operation=="LOGIN") {
             delivered = connectionHandler->sendLine(line, 02);
         }
-        if (operation == "LOGOUT") {
+        else if (operation == "LOGOUT") {
             delivered = connectionHandler->sendLine(line, 03);
         }
-        if (operation=="FOLLOW") {
+        else if (operation=="FOLLOW") {
             delivered = connectionHandler->sendLine(line, 04);
         }
-        if (operation=="POST") {
+        else if (operation=="POST") {
             delivered = connectionHandler->sendLine(line, 05);
         }
-        if (operation=="PM") {
+        else if (operation=="PM") {
             delivered = connectionHandler->sendLine(line, 06);
         }
-        if (operation=="LOGSTAT") {
+        else if (operation=="LOGSTAT") {
             delivered = connectionHandler->sendLine(line, 07);
         }
-        if (operation=="STAT") {
+        else if (operation=="STAT") {
             delivered = connectionHandler->sendLine(line,8);
         }
-        if (operation=="BLOCK") {
+        else if (operation=="BLOCK") {
             delivered = connectionHandler->sendLine(line, 12);
         }
 
