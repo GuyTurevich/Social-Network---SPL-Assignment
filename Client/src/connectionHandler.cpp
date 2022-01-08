@@ -112,16 +112,16 @@ bool ConnectionHandler::getFrameAscii(std::string& frame, char delimiter) {
  
 bool ConnectionHandler::sendFrameAscii(const std::string& frame, char delimiter,short opcode) {
     char *bytes = new char [2];
-//    bytes[0]='1';
-//    bytes[1]='0';
-    int opPosition = frame.find(' ');
-    std::string newFrame = frame.substr(opPosition+1);
     shortToBytes(opcode,bytes);
     bool result= sendBytes(bytes,2);
     result = sendBytes("\0",1);
-    result = sendBytes(newFrame.c_str(),newFrame.length());
-//    result = sendBytes("\0",1);
 
+    std::string newFrame ;
+    int opPosition = frame.find(' ');
+    if (opPosition!=-1) {
+        newFrame = frame.substr(opPosition + 1);
+        result = sendBytes(newFrame.c_str(),newFrame.length());
+    }
 
 	if(!result) return false;
 	return sendBytes(&delimiter,1);
