@@ -53,7 +53,7 @@ bool ReadWrite::readKeyBoard(){
         }
 
         if (!delivered) {
-            std::cout << "Disconnected. Exiting...\n" << std::endl;
+            std::cout << "Disconnected. Exiting....\n" << std::endl;
             break;
         }
     }
