@@ -20,32 +20,28 @@ public class POST extends Message<String> {
 
     public void process() {
         String thisUser = database.getUsernameById(connectionId);
-        String [] temp = details.split(" ");
+        String[] temp = details.split(" ");
         LinkedList<String> taggedUsers = new LinkedList<>();
-        for(String word : temp){
-            if(word.charAt(0) == '@')
+        for (String word : temp) {
+            if (word.charAt(0) == '@')
                 taggedUsers.add(word.substring(1));
         }
         ConcurrentLinkedDeque<String> usersToSend = database.getFollowersList(database.getUsernameById(connectionId));
-        for(String username : taggedUsers){
-            if(!database.isRegistered(username)) {
-                connections.send(connectionId, "ERROR 5");
-                return;
-            }
-            else
-                if(!database.isBlocked(username, thisUser) &&
-                        !database.isBlocked(thisUser, username) &&
-                        !database.isFollowing(username, thisUser ))
-                    usersToSend.add(username);
+        for (String username : taggedUsers) {
+            if (database.isRegistered(username) &&
+                    !database.isBlocked(username, thisUser) &&
+                    !database.isBlocked(thisUser, username) &&
+                    !database.isFollowing(username, thisUser))
+                usersToSend.add(username);
         }
         String post = "";
-        for(String username : usersToSend){
-            post = "NOTIFICATION Public "+thisUser+" "+details;
-            if(database.isLoggedIn(username))
+        for (String username : usersToSend) {
+            post = "NOTIFICATION Public " + thisUser + " " + details;
+            if (database.isLoggedIn(username))
                 connections.send(database.getIdByUsername(username), post);
             else
                 database.addMessageToQueue(username, post);
-            }
+        }
         connections.send(connectionId, "ACK 5");
         database.savePost(thisUser, post);
     }
