@@ -76,8 +76,9 @@ bool ConnectionHandler::getFrameAscii(std::string& frame, char delimiter) {
     char ch;
     int i = 0;
     char* opcodebytes = new char[2];
-    short opcode;
+    short opcode=0;
     std::string command;
+    bool passedfirstspace= false;
     // Stop when we encounter the null character. 
     // Notice that the null character is not appended to the frame string.
     try {
@@ -85,23 +86,29 @@ bool ConnectionHandler::getFrameAscii(std::string& frame, char delimiter) {
 			getBytes(&ch, 1);
 
             //only add to frame after opcode decoded
-            if (i>1)
+            if (ch==0 && opcode!=0) {
+                passedfirstspace = true;
+                std::string space = " ";
+                frame.append(space);
+            }
+            else if (i>1 && passedfirstspace) {
                 frame.append(1, ch);
-            else{
+            }
+            else if (i>=0 && i<2){
                 if (i==0){
-                    opcodebytes[0]=ch;                 ///why is this not reachable
+                    opcodebytes[0]=ch;
                     }
-                else {
+                else{
                     opcodebytes[1]=ch;
                     opcode = bytesToShort(opcodebytes);
-//                    command=findCommandString(opcode);
-//                    frame.append(command);
+                    command=findCommandString(opcode);
+                    frame.append(command);
                 }
             }
             i++;
         }while (delimiter != ch);
 
-        std::replace(frame.begin(),frame.end(),'\0', ' ');
+//        std::replace(frame.begin(),frame.end(),'\0', ' ');
 
     } catch (std::exception& e) {
         std::cerr << "recv failed (Error: " << e.what() << ')' << std::endl;
@@ -114,11 +121,11 @@ bool ConnectionHandler::sendFrameAscii(const std::string& frame, char delimiter,
     char *bytes = new char [2];
     shortToBytes(opcode,bytes);
     bool result= sendBytes(bytes,2);
-    result = sendBytes("\0",1);
 
     std::string newFrame ;
     int opPosition = frame.find(' ');
     if (opPosition!=-1) {
+        result = sendBytes("\0",1);
         newFrame = frame.substr(opPosition + 1);
         result = sendBytes(newFrame.c_str(),newFrame.length());
     }
