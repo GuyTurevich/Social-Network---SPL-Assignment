@@ -26,7 +26,7 @@ public class PM extends Message<String> {
 
         if(!database.isRegistered(recipient) ||
                 !database.isFollowing(username, recipient)) // also true if one of the users blocked the other
-            connections.send(connectionId, "ERROR 6");
+            connections.send(connectionId, "ERROR 6 @"+recipient+" isn't applicable for private messages");
         else{
             String filteredMessage = "NOTIFICATION PM "+username+" "+database.filterMessage(message);
             filteredMessage = filteredMessage + new SimpleDateFormat(" dd-MM-yyyy HH:mm").format(new Date());

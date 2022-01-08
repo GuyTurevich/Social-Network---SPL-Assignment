@@ -15,7 +15,7 @@ public class Database {
     private ConcurrentHashMap<String, ConcurrentLinkedDeque<String>> following; // a list of people followed by each user
     private ConcurrentLinkedDeque<String> loggedInUsers;
     private ConcurrentHashMap<String, ConcurrentLinkedDeque<String>> blockingLists;
-    private String[] filteredWords = {"fuck", "shit", "sharmuta", "shtik", "shtak", "nigger"};
+    private String[] filteredWords = {"fuck", "shit", "shtik", "shtak"};
 
     private ConcurrentHashMap<String, ConcurrentLinkedDeque<String>> PMs; // list of PM sent by each user
     private ConcurrentHashMap<String, ConcurrentLinkedDeque<String>> posts; // list of posts posted by each user

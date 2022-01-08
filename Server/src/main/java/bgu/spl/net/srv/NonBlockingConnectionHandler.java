@@ -64,11 +64,12 @@ public class NonBlockingConnectionHandler<T> implements java.io.Closeable, Conne
                     }
                 } finally {
                     releaseBuffer(buf);
-                    close();
+
                 }
             };
         } else {
             releaseBuffer(buf);
+            close();
             return null;
         }
 
