@@ -24,6 +24,6 @@ public class LOGSTAT extends Message<String> {
             if (!database.isBlocked(username, thisUser) && !database.isBlocked(thisUser, username))
                 output += "ACK 7 " + database.getStats(username) + "\n";
         }
-        connections.send(connectionId, output);
+        connections.send(connectionId, output.substring(0, output.length() - 1));
     }
 }

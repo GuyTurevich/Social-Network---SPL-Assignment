@@ -29,6 +29,6 @@ public class STAT extends Message<String> {
                 output += "ACK 8 " + database.getStats(username) + "\n";
             }
         }
-        connections.send(connectionId, output);
+        connections.send(connectionId, output.substring(0, output.length() - 1));
     }
 }

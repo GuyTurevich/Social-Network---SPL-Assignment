@@ -26,7 +26,7 @@ public class POST extends Message<String> {
             if(word.charAt(0) == '@')
                 taggedUsers.add(word.substring(1));
         }
-        ConcurrentLinkedDeque<String> usersToSend = database.getFollowersList(connectionId);
+        ConcurrentLinkedDeque<String> usersToSend = database.getFollowersList(database.getUsernameById(connectionId));
         for(String username : taggedUsers){
             if(!database.isRegistered(username)) {
                 connections.send(connectionId, "ERROR 5");

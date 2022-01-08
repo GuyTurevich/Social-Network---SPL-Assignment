@@ -125,8 +125,7 @@ public class Database {
         return blockingLists.get(blockerUsername).contains(blockedUsername);
     }
 
-    public ConcurrentLinkedDeque<String> getFollowersList(int connectionId) {
-        String username = idToUsername.get(connectionId);
+    public ConcurrentLinkedDeque<String> getFollowersList(String username) {
         ConcurrentLinkedDeque<String> followersList = new ConcurrentLinkedDeque<>();
         for (User user : users) {
             if (following.get(user.getUsername()).contains(username))
@@ -173,7 +172,7 @@ public class Database {
         int age = Period.between(birthDate, now).getYears();
 
         int numPosts = posts.get(username).size();
-        int numFollowers = getFollowersList(usernameToID.get(username)).size();
+        int numFollowers = getFollowersList(username).size();
         int numFollowing = following.get(username).size();
 
         return age + " " + numPosts + " " + numFollowers + " " + numFollowing;
