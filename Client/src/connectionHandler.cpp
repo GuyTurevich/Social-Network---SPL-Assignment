@@ -112,11 +112,9 @@ bool ConnectionHandler::getFrameAscii(std::string& frame, char delimiter) {
 
 
     } catch (std::exception& e) {
-        delete[] opcodebytes;
         std::cerr << "recv failed (Error: " << e.what() << ')' << std::endl;
         return false;
     }
-    delete[] opcodebytes;
     return true;
 }
  
@@ -124,7 +122,7 @@ bool ConnectionHandler::sendFrameAscii(const std::string& frame, char delimiter,
     char *bytes = new char [2];
     shortToBytes(opcode,bytes);
     bool result= sendBytes(bytes,2);
-    delete bytes;
+    delete[] bytes;
 
     std::string newFrame ;
     int opPosition = frame.find(' ');
