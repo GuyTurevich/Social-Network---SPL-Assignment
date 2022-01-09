@@ -17,7 +17,7 @@ public class REGISTER extends Message<String> {
     }
 
 
-    public void process() {
+    public synchronized void process() {
         String[] arguments = details.split(" ");
         if (arguments.length != 3 || arguments[2].length() != 10) {
             connections.send(connectionId, "ERROR 1");

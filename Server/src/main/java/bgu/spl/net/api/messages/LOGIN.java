@@ -18,7 +18,7 @@ public class LOGIN extends Message<String> {
     }
 
 
-    public void process() {
+    public synchronized void process() {
 
         String[] arguments = details.split(" ");
         if(arguments.length != 3){
