@@ -37,6 +37,7 @@ bool ReadWrite::readKeyBoard(){
             std::unique_lock<std::mutex> lock(_mutex);
             cv.wait(lock);
             std::cout<< "Client closing.." << std::endl;
+
             return true;
         } else if (operation == "FOLLOW") {
             delivered = connectionHandler->sendLine(line, 04);
@@ -54,6 +55,7 @@ bool ReadWrite::readKeyBoard(){
 
         if (!delivered) {
             std::cout << "Disconnected. Exiting....\n" << std::endl;
+//            connectionHandler = nullptr;
             break;
         }
     }

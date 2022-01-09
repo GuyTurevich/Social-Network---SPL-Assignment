@@ -75,14 +75,15 @@ bool ConnectionHandler::sendLine(std::string& line,short opcode) {
 bool ConnectionHandler::getFrameAscii(std::string& frame, char delimiter) {
     char ch;
     int i = 0;
-    char* opcodebytes = new char[2];
     short opcode=0;
+    char* opcodebytes = new char[2];
     std::string command;
     bool passedfirstspace= false;
     // Stop when we encounter the null character. 
     // Notice that the null character is not appended to the frame string.
     try {
 		do{
+
 			getBytes(&ch, 1);
 
             //only add to frame after opcode decoded
@@ -101,6 +102,7 @@ bool ConnectionHandler::getFrameAscii(std::string& frame, char delimiter) {
                 else{
                     opcodebytes[1]=ch;
                     opcode = bytesToShort(opcodebytes);
+                    delete[] opcodebytes;
                     command=findCommandString(opcode);
                     frame.append(command);
                 }
@@ -108,12 +110,13 @@ bool ConnectionHandler::getFrameAscii(std::string& frame, char delimiter) {
             i++;
         }while (delimiter != ch);
 
-//        std::replace(frame.begin(),frame.end(),'\0', ' ');
 
     } catch (std::exception& e) {
+        delete[] opcodebytes;
         std::cerr << "recv failed (Error: " << e.what() << ')' << std::endl;
         return false;
     }
+    delete[] opcodebytes;
     return true;
 }
  
@@ -121,6 +124,7 @@ bool ConnectionHandler::sendFrameAscii(const std::string& frame, char delimiter,
     char *bytes = new char [2];
     shortToBytes(opcode,bytes);
     bool result= sendBytes(bytes,2);
+    delete bytes;
 
     std::string newFrame ;
     int opPosition = frame.find(' ');

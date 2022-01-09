@@ -26,6 +26,7 @@ int main (int argc, char *argv[]) {
     std::thread readKeyBoard(&ReadWrite::readKeyBoard,&readWrite);
     readWrite.readFromSocket();
     readKeyBoard.join();
+    connectionHandler.close();
 
     return 0;
 }
